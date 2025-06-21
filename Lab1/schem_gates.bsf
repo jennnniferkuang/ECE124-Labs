@@ -1,0 +1,113 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 16 16 208 208)
+	(text "schem_gates" (rect 5 0 81 19)(font "Intel Clear" (font_size 8)))
+	(text "inst" (rect 8 171 24 188)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "XOR_IN1" (rect 0 0 54 19)(font "Intel Clear" (font_size 8)))
+		(text "XOR_IN1" (rect 21 27 75 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "XOR_IN2" (rect 0 0 54 19)(font "Intel Clear" (font_size 8)))
+		(text "XOR_IN2" (rect 21 43 75 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "OR_IN1" (rect 0 0 46 19)(font "Intel Clear" (font_size 8)))
+		(text "OR_IN1" (rect 21 59 67 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 64)(pt 16 64))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "OR_IN2" (rect 0 0 46 19)(font "Intel Clear" (font_size 8)))
+		(text "OR_IN2" (rect 21 75 67 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 80)(pt 16 80))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "NAND_IN1" (rect 0 0 64 19)(font "Intel Clear" (font_size 8)))
+		(text "NAND_IN1" (rect 21 91 85 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 96)(pt 16 96))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "NAND_IN2" (rect 0 0 64 19)(font "Intel Clear" (font_size 8)))
+		(text "NAND_IN2" (rect 21 107 85 126)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 112)(pt 16 112))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "AND_IN1" (rect 0 0 55 19)(font "Intel Clear" (font_size 8)))
+		(text "AND_IN1" (rect 21 123 76 142)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 128)(pt 16 128))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "AND_IN2" (rect 0 0 55 19)(font "Intel Clear" (font_size 8)))
+		(text "AND_IN2" (rect 21 139 76 158)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 144)(pt 16 144))
+	)
+	(port
+		(pt 192 32)
+		(output)
+		(text "XOR_OUT" (rect 0 0 60 19)(font "Intel Clear" (font_size 8)))
+		(text "XOR_OUT" (rect 111 27 171 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 192 32)(pt 176 32))
+	)
+	(port
+		(pt 192 48)
+		(output)
+		(text "OR_OUT" (rect 0 0 51 19)(font "Intel Clear" (font_size 8)))
+		(text "OR_OUT" (rect 120 43 171 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 192 48)(pt 176 48))
+	)
+	(port
+		(pt 192 64)
+		(output)
+		(text "NAND_OUT" (rect 0 0 70 19)(font "Intel Clear" (font_size 8)))
+		(text "NAND_OUT" (rect 101 59 171 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 192 64)(pt 176 64))
+	)
+	(port
+		(pt 192 80)
+		(output)
+		(text "AND_OUT" (rect 0 0 61 19)(font "Intel Clear" (font_size 8)))
+		(text "AND_OUT" (rect 110 75 171 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 192 80)(pt 176 80))
+	)
+	(drawing
+		(rectangle (rect 16 16 176 176))
+	)
+)

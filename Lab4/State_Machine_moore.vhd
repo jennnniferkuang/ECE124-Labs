@@ -1,0 +1,453 @@
+
+-- Section 205 Group 6 : Jennifer Kuang, Nur Iscan
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+---------------------------------------------------------------
+-- 			State machine, controls light sequence 			 -
+---------------------------------------------------------------
+
+ENTITY State_Machine_Moore IS PORT (
+
+		clk_input 			: in std_logic;
+		reset					: in std_logic;
+		enable				: in std_logic;
+		blink_sig			: in std_logic;
+		NSrequest			: in std_logic;
+		EWrequest			: in std_logic;
+		offline				: in std_logic;
+		greenNS				: out std_logic;
+		yellowNS				: out std_logic;
+		redNS					: out std_logic;
+		greenEW				: out std_logic;
+		yellowEW				: out std_logic;
+		redEW					: out std_logic;
+		NS_CROSSINGS		: out std_logic;
+		EW_CROSSINGS		: out std_logic;
+		NS_REGISTER_CLEAR	: out std_logic;
+		EW_REGISTER_CLEAR	: out std_logic;
+		stateout				: out std_logic_vector(3 downto 0)
+
+ );
+END ENTITY;
+ 
+ 
+
+Architecture SM of State_Machine_Moore is
+ 
+		TYPE STATE_NAMES IS (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9,S10, S11, S12, S13, S14, S15);   -- list all the STATE_NAMES values
+		SIGNAL current_state, next_state	: STATE_NAMES;     														-- signals of type STATE_NAMES
+
+BEGIN
+
+---------------------------------------------------------------
+-- 							State Register 							 --
+---------------------------------------------------------------
+
+	Register_Section: PROCESS (clk_input)  -- Updates with clock
+	BEGIN
+		IF(rising_edge(clk_input)) THEN
+			IF (reset = '1') THEN
+				current_state <= S0;
+			ELSIF (reset = '0' AND enable = '1') THEN
+				current_state <= next_State;
+			END IF;
+		END IF;
+	END PROCESS;
+
+---------------------------------------------------------------
+-- 							Transition Logic 							 --
+---------------------------------------------------------------
+
+	Transition_Section: PROCESS (EWrequest, NSrequest, current_state, offline) BEGIN
+	
+		CASE current_state IS
+		
+		-- Flashing green NS, solid red EW (0, 1)
+		
+			  WHEN S0 =>
+					IF (EWrequest = '1' AND NSrequest = '0') then
+						 next_state <= S6;
+					else
+						 next_state <= S1;
+					end if;
+			  
+			  WHEN S1 =>    
+					IF (EWrequest = '1' AND NSrequest = '0') then
+						 next_state <= S6;
+					else    
+						 next_state <= S2;
+					end if;
+					
+		-- Solid green NS, solid red EW (2, 3, 4, 5)
+		
+			  WHEN S2 =>        
+					next_state <= S3;
+
+			  WHEN S3 =>        
+					next_state <= S4;
+
+			  WHEN S4 =>        
+					next_state <= S5;
+
+			  WHEN S5 =>        
+					next_state <= S6;
+					
+		-- Solid yellow NS, solid red EW (6, 7)
+		
+			  WHEN S6 =>        
+					next_state <= S7;
+
+			  WHEN S7 =>        
+					next_state <= S8;
+					
+		-- Flashing green EW, solid red NS (8, 9)
+
+			  WHEN S8 =>
+					IF (NSrequest = '1' AND EWrequest = '0') then
+						 next_state <= S14;
+					else    
+						 next_state <= S9;
+					end if;
+
+			  WHEN S9 => 
+					IF (NSrequest = '1' AND EWrequest = '0') then
+						 next_state <= S14;
+					else
+						 next_state <= S10;
+					end if;
+
+		-- Solid green EW, solid red NS (10, 11, 12, 13)
+		
+			  WHEN S10 => 
+					next_state <= S11;
+
+			  WHEN S11 => 
+					next_state <= S12;
+
+			  WHEN S12 => 
+					next_state <= S13;
+
+			  WHEN S13 => 
+					next_state <= S14; 
+					
+		-- Solid yellow EW, solid red NS (14, 15)
+
+			  WHEN S14 => 
+					next_state <= S15;
+
+			  WHEN S15 => 
+					IF (offline = '1') then
+						 next_state <= S15;  -- Freeze the state at S15 if offline = '1'
+					else
+						 next_state <= S0;   -- Transition back to S0 if offline = '0'
+					end if;
+
+		-- Other cases, start at state 0
+			  WHEN OTHERS =>
+					next_state <= S0;
+					
+		 END CASE;
+	END PROCESS;
+
+	 
+
+---------------------------------------------------------------
+-- 							Decoder Logic	 							 --
+---------------------------------------------------------------
+
+	Decoder_Section: PROCESS (blink_sig, current_state) BEGIN
+
+			NS_REGISTER_CLEAR <= '0';
+			EW_REGISTER_CLEAR	<= '0';
+
+		CASE current_state IS
+
+		-- Flashing green NS, solid red EW (0, 1)
+		
+				WHEN S0 =>
+				
+					greenNS  <= blink_sig;
+					yellowNS <= '0';
+					redNS <= '0'; 
+					
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0'; 
+					
+					stateout <= "0000";
+					
+				WHEN S1 =>		
+				
+					greenNS  <= blink_sig;
+					yellowNS <= '0';
+					redNS <= '0';
+					
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+				
+					stateout <= "0001";
+					
+		-- Solid green NS, solid red EW (2, 3, 4, 5)
+
+				WHEN S2 =>		
+				
+					greenNS  <= '1';
+					yellowNS <= '0';
+					redNS <= '0';
+							
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '1';
+					EW_CROSSINGS <= '0';
+				
+					stateout <= "0010";
+				
+				WHEN S3 =>		
+				
+					greenNS  <= '1';
+					yellowNS <= '0';
+					redNS <= '0';
+								
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '1';
+					EW_CROSSINGS <= '0';
+				
+					stateout <= "0011";
+				
+				WHEN S4 =>		
+				
+					greenNS  <= '1';
+					yellowNS <= '0';
+					redNS <= '0';
+							
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '1';
+					EW_CROSSINGS <= '0';
+					
+					stateout <= "0100";
+
+				WHEN S5 =>		
+				
+					greenNS  <= '1';
+					yellowNS <= '0';
+					redNS <= '0';
+							 
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '1';
+					EW_CROSSINGS <= '0';
+					
+					stateout <= "0101";
+					
+		-- Solid yellow NS, solid red EW (6, 7)
+					
+				WHEN S6 =>		
+				
+					greenNS  <= '0';
+					yellowNS <= '1';
+					redNS <= '0';
+							
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+					NS_REGISTER_CLEAR<='1';
+					EW_REGISTER_CLEAR<= '0';
+					
+					stateout <= "0110";
+					
+				WHEN S7 =>		
+			
+					greenNS  <= '0';
+					yellowNS <= '1';
+					redNS <= '0';
+				
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '1'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+				
+					stateout <= "0111";
+				
+		-- Flashing green EW, solid red NS (8, 9)
+				
+				WHEN S8 =>		
+				
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+			 
+					greenEW  <= blink_sig;
+					yellowEW <= '0';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+					
+					stateout <= "1000";
+				
+				WHEN S9 =>		
+				
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+		 
+					greenEW  <= blink_sig;
+					yellowEW <= '0';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+			
+					stateout <= "1001";
+				
+		-- Solid green EW, solid red NS (10, 11, 12, 13)
+		
+				WHEN S10 =>		
+			
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+				 
+					greenEW  <= '1';
+					yellowEW <= '0';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '1';
+			
+					stateout <= "1010";
+				
+				WHEN S11 =>		
+
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+					
+					greenEW  <= '1';
+					yellowEW <= '0';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '1';
+				
+					stateout <= "1011";
+				
+				WHEN S12 =>		
+			
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+					
+					greenEW  <= '1';
+					yellowEW <= '0';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '1';
+				
+					stateout <= "1100";
+				
+				WHEN S13=>		
+
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+				
+					greenEW  <= '1';
+					yellowEW <= '0';
+					redEW <= '0';
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '1';
+			
+					stateout <= "1101";
+				
+		-- Solid yellow EW, solid red NS (14, 15)
+		
+				WHEN S14 =>		
+
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '1';
+					
+					greenEW  <= '0';
+					yellowEW <= '1';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+					NS_REGISTER_CLEAR<= '0';
+					EW_REGISTER_CLEAR<= '1';
+					stateout <= "1110";
+				
+				WHEN S15 =>
+					-- Flashing yellow EW and red NS when offline
+					IF (offline = '1') THEN
+						 greenNS <= '0';
+						 yellowNS <= '0';
+						 redNS <= blink_sig;
+						 
+						 greenEW <= '0';
+						 yellowEW <= blink_sig;
+						 redEW   <= '0';
+						 
+					ELSE
+						 -- If not offline, keep default behavior for S15 (no flashing)
+						 yellowNS <= '0';
+						 greenNS  <= '0';
+						 redNS    <= '1';
+						 
+						 greenEW <= '0';
+						 yellowEW<= '1';
+						 redEW   <= '0'; 
+						 
+					END IF;
+
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+					stateout <= "1111";
+				
+		-- Other cases, start at state 0
+				WHEN others =>		
+				
+					greenNS  <= '0';
+					yellowNS <= '0';
+					redNS <= '0';
+					
+					greenEW  <= '0';
+					yellowEW <= '0';
+					redEW <= '0'; 
+					
+					NS_CROSSINGS <= '0';
+					EW_CROSSINGS <= '0';
+		
+				
+		END CASE;
+	END PROCESS;
+
+END ARCHITECTURE SM;

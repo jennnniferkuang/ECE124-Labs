@@ -1,0 +1,67 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_numeric_std.all;
+
+
+entity energy_monitor is port (
+	LT_desired, GT_desired, EQ_desired, vacation_mode, MC_test_mode, window_open, door_open: in  std_logic;
+	furnace, at_temp, AC, blower, window, door, vacation, run, increase, decrease: out	std_logic							 
+	); 
+end energy_monitor;
+
+architecture monitor of energy_monitor is
+
+signal mux_temp, curr_temp: std_logic;
+
+begin
+
+	NRG_monitor: process (window_open, door_open, MC_test_mode) is
+	begin
+	
+		if (EQ_desired = '1') then at_temp <= '1';
+		else at_temp <= '0';
+		end if;
+		
+		if (LT_desired = '1') then furnace <= '1';
+		else furnace <= '0';
+		end if;
+		
+		if (GT_desired = '1') then AC <= '1';
+		else AC <= '0';
+		end if;
+		
+		if (vacation_mode = '1') then vacation <= '1';
+		else vacation = '0';
+		end if;
+		
+		if (window_open = '1') then window = '1';
+		else window = '0';
+		end if;
+		
+		if (door_open = '1') then door = '1';
+		else door = '0';
+		end if;
+		
+		if ((EQ_desired = '0') and (MC_test_mode = '0') and (window_open = '0') and (door_open = '0') then
+			run <= '1';
+			blower <= '1';
+			
+			if (LT_desired = '1') then increase <= '1';
+			else increase <= '0';
+			end if;
+			
+			if (GT_desired = '1') then decrease <= '1';
+			else decrease <= '0';
+			end if;
+		
+		else
+			run <= '0';
+			blower <= '0';
+			increase <= '0';
+			decrease <= '0';
+		
+		end if;
+
+	end process;
+
+end monitor;

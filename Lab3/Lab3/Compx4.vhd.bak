@@ -1,0 +1,13 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+
+entity Compx4 is port (
+
+	); 
+end Compx4;
+
+architecture comp_arc4 of Compx4 is
+begin
+
+end comp_arc4;

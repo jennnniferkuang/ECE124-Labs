@@ -1,0 +1,29 @@
+LIBRARY ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+ENTITY full_adder_1bit is port (
+			INPUT_A, INPUT_B, CARRY_IN	:IN std_logic;
+			FULL_CARRY_OUTPUT, FULL_SUM_OUTPUT	:	OUT std_logic
+);
+END full_adder_1bit;
+ARCHITECTURE simple_gates_full OF full_adder_1bit IS
+
+
+	component HALF_ADDER port (
+		INPUT_A : IN std_logiC;
+		INPUT_B : IN std_logiC;
+		SUM_OUTPUT   : OUT std_logic;
+		CARRY_OUTPUT   : OUT std_logic
+		);
+	end component;
+	SIGNAL HALF_SUM, HALF_CARRY1, HALF_CARRY2: STD_LOGIC;
+
+begin
+
+INST1: HALF_ADDER PORT MAP(INPUT_A, INPUT_B, HALF_SUM, HALF_CARRY1);
+INST2: HALF_ADDER PORT MAP(HALF_SUM, CARRY_IN, FULL_SUM_OUTPUT, HALF_CARRY2);
+
+FULL_CARRY_OUTPUT <= HALF_CARRY1 OR HALF_CARRY2;
+
+end simple_gates_full;

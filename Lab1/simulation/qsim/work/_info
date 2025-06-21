@@ -1,0 +1,54 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/nmiscan/ECE-124/Lab1/simulation/qsim
+vLogicalStep_Lab1_top
+Z1 !s110 1736886338
+!i10b 1
+!s100 W92EcNdGZHoL;oQQ[:R0;0
+IBCkUGL`L4zFKF0;IA9zE`3
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+Z3 w1736886337
+8LogicalStep_Lab1_top.vo
+FLogicalStep_Lab1_top.vo
+L0 31
+Z4 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z5 !s108 1736886338.000000
+!s107 LogicalStep_Lab1_top.vo|
+!s90 -work|work|LogicalStep_Lab1_top.vo|
+!i113 1
+Z6 o-work work
+Z7 tCvgOpt 0
+n@logical@step_@lab1_top
+vLogicalStep_Lab1_top_vlg_vec_tst
+R1
+!i10b 1
+!s100 P>Sh1U7kAen?l31[zPd7z3
+IPH1c<jnaLbaeOg3UhM2F^2
+R2
+R0
+R3
+8Waveform.vwf.vt
+FWaveform.vwf.vt
+L0 29
+R4
+r1
+!s85 0
+31
+R5
+!s107 Waveform.vwf.vt|
+!s90 -work|work|Waveform.vwf.vt|
+!i113 1
+R6
+R7
+n@logical@step_@lab1_top_vlg_vec_tst

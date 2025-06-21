@@ -1,0 +1,75 @@
+|LogicalStep_Lab1_top
+leds[0] <= PolarityXnorGates:inst2.OUT_4
+leds[1] <= PolarityXnorGates:inst2.OUT_3
+leds[2] <= PolarityXnorGates:inst2.OUT_2
+leds[3] <= PolarityXnorGates:inst2.OUT_1
+leds[4] <= Polarity_gates:inst3.OUT_4
+leds[5] <= Polarity_gates:inst3.OUT_3
+leds[6] <= Polarity_gates:inst3.OUT_2
+leds[7] <= Polarity_gates:inst3.OUT_1
+sw[1] => Polarity_gates:inst3.POLARITY_CNTRL
+sw[1] => PolarityXnorGates:inst2.POLARITY_CNTRL
+PB[0] => inst5.IN0
+PB[1] => inst6.IN0
+
+
+|LogicalStep_Lab1_top|Polarity_gates:inst3
+POLARITY_CNTRL => OUT_1.IN0
+POLARITY_CNTRL => OUT_2.IN0
+POLARITY_CNTRL => OUT_3.IN0
+POLARITY_CNTRL => OUT_4.IN0
+IN_1 => OUT_1.IN1
+IN_2 => OUT_2.IN1
+IN_3 => OUT_3.IN1
+IN_4 => OUT_4.IN1
+OUT_1 <= OUT_1.DB_MAX_OUTPUT_PORT_TYPE
+OUT_2 <= OUT_2.DB_MAX_OUTPUT_PORT_TYPE
+OUT_3 <= OUT_3.DB_MAX_OUTPUT_PORT_TYPE
+OUT_4 <= OUT_4.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|LogicalStep_Lab1_top|VHDL_gates:inst1
+XOR_IN1 => XOR_OUT.IN0
+XOR_IN2 => XOR_OUT.IN1
+OR_IN1 => OR_OUT.IN0
+OR_IN2 => OR_OUT.IN1
+NAND_IN1 => NAND_OUT.IN0
+NAND_IN2 => NAND_OUT.IN1
+AND_IN1 => AND_OUT.IN0
+AND_IN2 => AND_OUT.IN1
+XOR_OUT <= XOR_OUT.DB_MAX_OUTPUT_PORT_TYPE
+OR_OUT <= OR_OUT.DB_MAX_OUTPUT_PORT_TYPE
+NAND_OUT <= NAND_OUT.DB_MAX_OUTPUT_PORT_TYPE
+AND_OUT <= AND_OUT.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|LogicalStep_Lab1_top|PolarityXnorGates:inst2
+OUT_1 <= inst.DB_MAX_OUTPUT_PORT_TYPE
+POLARITY_CNTRL => inst.IN0
+POLARITY_CNTRL => inst1.IN0
+POLARITY_CNTRL => inst2.IN0
+POLARITY_CNTRL => inst3.IN0
+IN_1 => inst.IN1
+OUT_2 <= inst1.DB_MAX_OUTPUT_PORT_TYPE
+IN_2 => inst1.IN1
+OUT_3 <= inst2.DB_MAX_OUTPUT_PORT_TYPE
+IN_3 => inst2.IN1
+OUT_4 <= inst3.DB_MAX_OUTPUT_PORT_TYPE
+IN_4 => inst3.IN1
+
+
+|LogicalStep_Lab1_top|schem_gates:inst
+XOR_OUT <= inst5.DB_MAX_OUTPUT_PORT_TYPE
+XOR_IN1 => inst5.IN0
+XOR_IN2 => inst5.IN1
+OR_OUT <= inst4.DB_MAX_OUTPUT_PORT_TYPE
+OR_IN2 => inst4.IN0
+OR_IN1 => inst4.IN1
+NAND_OUT <= inst2.DB_MAX_OUTPUT_PORT_TYPE
+NAND_IN2 => inst2.IN0
+NAND_IN1 => inst2.IN1
+AND_OUT <= inst.DB_MAX_OUTPUT_PORT_TYPE
+AND_IN1 => inst.IN0
+AND_IN2 => inst.IN1
+
+
